@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buildease - AI Powered Construction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles for Neon Theme and Animations */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c111d; /* Darker background for depth */
+            /* New animated background */
+            background-image:
+                radial-gradient(at 20% 20%, hsla(54, 98%, 79%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 20%, hsla(38, 96%, 54%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 20% 80%, hsla(54, 98%, 79%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 80%, hsla(38, 96%, 54%, 0.15) 0px, transparent 50%);
+            animation: background-pan 30s linear infinite;
+        }
+
+        .neon-yellow-text {
+            color: #fef08a;
+            /* Updated for a more subtle glow */
+            text-shadow: 0 0 8px rgba(254, 240, 138, 0.4);
+        }
+
+        .neon-brown-text {
+            color: #f59e0b;
+             text-shadow: 0 0 5px #f59e0b, 0 0 10px #f59e0b, 0 0 20px #b45309;
+        }
+
+        .animated-gradient {
+            background: linear-gradient(-45deg, #fef08a, #ffffff, #d97706, #fef08a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #facc15, #f59e0b, #facc15);
+            background-size: 200% 200%;
+            transition: background-position 0.5s ease;
+        }
+        
+        .btn-primary:hover {
+            background-position: right center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(252, 211, 77, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .input-field {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #fef08a;
+            box-shadow: 0 0 10px rgba(252, 211, 77, 0.5);
+            outline: none;
+        }
+        
+        /* Custom Select Dropdown Styling */
+        select.input-field {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            color: white;
+        }
+        select.input-field option {
+            background-color: #0c111d;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes background-pan {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 10% 20%; }
+            50% { background-position: 20% 0%; }
+            75% { background-position: 10% -20%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* For 3D model placeholder */
+        .cube-container { perspective: 1000px; }
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate-cube 20s infinite linear;
+        }
+        .cube-face {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 1px solid #fef08a;
+            background: rgba(252, 211, 77, 0.1);
+        }
+        .front  { transform: rotateY(  0deg) translateZ(75px); }
+        .back   { transform: rotateY(180deg) translateZ(75px); }
+        .right  { transform: rotateY( 90deg) translateZ(75px); }
+        .left   { transform: rotateY(-90deg) translateZ(75px); }
+        .top    { transform: rotateX( 90deg) translateZ(75px); }
+        .bottom { transform: rotateX(-90deg) translateZ(75px); }
+        @keyframes rotate-cube {
+            from { transform: rotateX(0) rotateY(0); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        
+        /* Dashboard card fade-in animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white selection:bg-yellow-400 selection:text-gray-900">
+
+    <!--
+    ===================================================================
+    LANDING PAGE
+    ===================================================================
+    -->
+    <main id="landing-page" class="relative overflow-hidden">
+        <!-- Background Glow -->
+        <div class="absolute top-0 -left-1/4 w-96 h-96 bg-yellow-400/20 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+        <div class="absolute bottom-0 -right-1/4 w-96 h-96 bg-amber-500/20 rounded-full filter blur-3xl opacity-30 animate-pulse animation-delay-4000"></div>
+
+        <header class="absolute top-0 left-0 right-0 z-10 p-4">
+            <nav class="container mx-auto flex justify-between items-center">
+                <a href="#" class="flex items-center space-x-2">
+                    <!-- SVG Logo -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#fef08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="#fef08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="#fef08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-2xl font-bold text-white">Buildease</span>
+                </a>
+                <div>
+                    <button onclick="showAuthModal('login')" class="px-4 py-2 text-white rounded-md hover:bg-white/10 transition">Login</button>
+                    <button onclick="showAuthModal('signup')" class="ml-2 px-6 py-2 btn-primary text-gray-900 font-semibold rounded-md shadow-lg shadow-yellow-500/20">Get Started</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="h-screen flex items-center justify-center text-center">
+            <div class="container mx-auto px-4 z-10">
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight">
+                    Your Home, Your Way –
+                    <br/>
+                    <span class="animated-gradient text-transparent bg-clip-text">Powered by AI.</span>
+                </h1>
+                <p class="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
+                    From 3D designs and budget planning to sourcing materials and hiring verified builders, Buildease is your all-in-one platform for seamless home construction.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+                     <button onclick="showAuthModal('signup', 'customer')" class="w-full sm:w-auto px-8 py-4 btn-primary text-gray-900 font-bold rounded-lg shadow-xl shadow-yellow-500/20 text-lg flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        Sign Up as Customer
+                    </button>
+                     <button onclick="showAuthModal('signup', 'contractor')" class="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-lg border border-white/20 hover:bg-white/20 transition flex items-center justify-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        Sign Up as Contractor
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center py-8 text-gray-500">
+            &copy; 2024 Buildease. All rights reserved.
+        </footer>
+    </main>
+
+    <!--
+    ===================================================================
+    AUTH MODAL (Login/Signup)
+    ===================================================================
+    -->
+    <div id="auth-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300 p-4">
+        <div id="auth-modal-content" class="glass-card rounded-2xl w-full max-w-md relative transform scale-95 transition-transform duration-300 max-h-[90vh] flex flex-col">
+            <div class="p-8 overflow-y-auto no-scrollbar">
+                <button onclick="hideAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition z-10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <!-- Login Form -->
+                <div id="login-form">
+                    <h2 class="text-3xl font-bold text-center mb-6 text-white">Welcome Back</h2>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input type="email" class="w-full p-3 rounded-lg input-field" placeholder="you@example.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                            <input type="password" class="w-full p-3 rounded-lg input-field" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="w-full py-3 btn-primary text-gray-900 font-bold rounded-lg">Login</button>
+                    </form>
+                    <p class="text-center mt-4 text-sm text-gray-400">
+                        Don't have an account? <button onclick="showAuthForm('signup')" class="font-semibold neon-yellow-text hover:underline">Sign Up</button>
+                    </p>
+                </div>
+
+                <!-- Signup Form -->
+                <div id="signup-form" class="hidden">
+                     <h2 class="text-3xl font-bold text-center mb-4 text-white">Create Your Account</h2>
+                     <div class="flex justify-center mb-4 border border-gray-600 rounded-lg p-1">
+                         <button id="customer-tab" onclick="switchAccountType('customer')" class="w-1/2 py-2 rounded-md text-sm font-semibold transition bg-yellow-400 text-gray-900">I'm a Customer</button>
+                         <button id="contractor-tab" onclick="switchAccountType('contractor')" class="w-1/2 py-2 rounded-md text-sm font-semibold transition text-gray-300">I'm a Contractor</button>
+                     </div>
+                     <form onsubmit="handleSignup(event)">
+                        <input type="hidden" id="account-type" value="customer">
+                        
+                        <!-- Common fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                           <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                                <input type="text" id="signup-name" class="w-full p-3 rounded-lg input-field" placeholder="John Doe" required value="Alex Chen">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                                <input type="email" id="signup-email" class="w-full p-3 rounded-lg input-field" placeholder="you@example.com" required value="alex.chen@email.com">
+                            </div>
+                        </div>
+
+                        <!-- Contractor Specific Fields -->
+                        <div id="contractor-fields" class="hidden space-y-4 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Company Name</label>
+                                    <input type="text" class="w-full p-3 rounded-lg input-field" placeholder="Apex Constructions" value="Prestige Homes Inc.">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Years of Experience</label>
+                                    <input type="number" class="w-full p-3 rounded-lg input-field" placeholder="10" value="15">
+                                </div>
+                            </div>
+                             <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Specialization</label>
+                                <select class="w-full p-3 rounded-lg input-field">
+                                    <option selected>Residential Construction</option>
+                                    <option>Commercial Projects</option>
+                                    <option>Renovations & Remodeling</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Company Website (Optional)</label>
+                                <input type="url" class="w-full p-3 rounded-lg input-field" placeholder="https://example.com" value="https://prestigehomes.com">
+                            </div>
+                        </div>
+
+                        <!-- Customer Specific Fields -->
+                        <div id="customer-fields" class="space-y-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Primary Location (City)</label>
+                                <input type="text" id="signup-location" class="w-full p-3 rounded-lg input-field" placeholder="e.g., Bangalore" value="Bangalore">
+                            </div>
+                        </div>
+
+                        <!-- Common password field -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                            <input type="password" id="signup-password" class="w-full p-3 rounded-lg input-field" placeholder="••••••••" required value="password123">
+                        </div>
+                        <button type="submit" class="w-full py-3 btn-primary text-gray-900 font-bold rounded-lg">Create Account</button>
+                    </form>
+                     <p class="text-center mt-4 text-sm text-gray-400">
+                        Already have an account? <button onclick="showAuthForm('login')" class="font-semibold neon-yellow-text hover:underline">Login</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--
+    ===================================================================
+    MAIN APPLICATION (Customer & Contractor Dashboards)
+    ===================================================================
+    -->
+    <div id="app-container" class="hidden">
+        <div class="flex h-screen bg-gray-900">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="w-64 bg-gray-900/50 border-r border-white/10 flex flex-col no-scrollbar overflow-y-auto">
+                <div class="p-4 flex items-center space-x-2 border-b border-white/10 flex-shrink-0">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#fef08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="#fef08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="#fef08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-xl font-bold text-white">Buildease</span>
+                </div>
+                <div class="my-auto">
+                    <nav id="customer-nav" class="p-4 space-y-2"></nav>
+                    <nav id="contractor-nav" class="p-4 space-y-2"></nav>
+                </div>
+                <div class="p-4 border-t border-white/10 flex-shrink-0">
+                    <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-gray-300 hover:bg-yellow-400/10 hover:text-yellow-300 rounded-md transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        Logout
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div id="main-content" class="flex-1 flex flex-col overflow-hidden">
+                <header class="bg-gray-900/30 border-b border-white/10 p-4 flex justify-between items-center">
+                    <h1 id="page-title" class="text-2xl font-bold text-white">Dashboard</h1>
+                    <div class="flex items-center gap-4">
+                        <button onclick="navigateTo('marketplace')" class="relative text-gray-300 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                            <span id="cart-count" class="absolute -top-2 -right-2 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </button>
+                        <span class="text-sm text-gray-400">Welcome, <span id="user-name-display">User</span>!</span>
+                        <img src="https://placehold.co/40x40/1f2937/fef08a?text=U" alt="User" class="w-10 h-10 rounded-full border-2 border-yellow-400">
+                    </div>
+                </header>
+
+                <div class="flex-1 p-6 overflow-y-auto no-scrollbar">
+                    <!-- Dynamic content will be injected here -->
+                    <div id="page-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // ===================================================================
+        // STATE & MOCK DATA
+        // ===================================================================
+        let currentUserType = null; // 'customer' or 'contractor'
+        let cart = [];
+
+        const mockData = {
+            marketplaceItems: {
+                indian: [
+                    { id: 1, name: 'UltraTech Cement', category: 'Cement', price: 450, unit: 'bag', image: 'https://placehold.co/300x300/374151/fef08a?text=Cement' },
+                    { id: 2, name: 'Kajaria Vitrified Tiles', category: 'Tiles', price: 80, unit: 'sq.ft', image: 'https://placehold.co/300x300/374151/fef08a?text=Tiles' },
+                    { id: 3, name: 'Asian Paints Royale', category: 'Paint', price: 5000, unit: '20L', image: 'https://placehold.co/300x300/374151/fef08a?text=Paint' },
+                    { id: 4, name: 'TATA Tiscon Steel Bars', category: 'Steel', price: 85, unit: 'kg', image: 'https://placehold.co/300x300/374151/fef08a?text=Steel' },
+                ],
+                foreign: [
+                    { id: 5, name: 'LafargeHolcim Cement', category: 'Cement', price: 650, unit: 'bag', image: 'https://placehold.co/300x300/4b5563/fde047?text=Cement' },
+                    { id: 6, name: 'Porcelanosa Tiles', category: 'Tiles', price: 250, unit: 'sq.ft', image: 'https://placehold.co/300x300/4b5563/fde047?text=Tiles' },
+                    { id: 7, name: 'Sherwin-Williams Paint', category: 'Paint', price: 8000, unit: '20L', image: 'https://placehold.co/300x300/4b5563/fde047?text=Paint' },
+                    { id: 8, name: 'Gerdau S.A. Steel', category: 'Steel', price: 120, unit: 'kg', image: 'https://placehold.co/300x300/4b5563/fde047?text=Steel' },
+                ]
+            },
+            contractors: [
+                { id: 1, name: 'Prestige Constructions', rating: 4.8, specialization: 'Residential', projects: 50, bid: '₹24.5L', timeline: '8 months' },
+                { id: 2, name: 'Sobha Developers', rating: 4.9, specialization: 'Luxury Villas', projects: 120, bid: '₹26L', timeline: '7 months' },
+                { id: 3, name: 'ValueBuild Homes', rating: 4.5, specialization: 'Budget Homes', projects: 200, bid: '₹22L', timeline: '9 months' },
+            ],
+            customerProjects: [
+                { title: 'Build 3BHK house in Mumbai', budget: '₹40L', location: 'Mumbai', posted: '2 days ago', type: 'New Construction', skills: 'Masonry, Plumbing, Electrical' },
+                { title: 'Renovate 2BHK apartment', budget: '₹10L', location: 'Delhi', posted: '5 days ago', type: 'Renovation', skills: 'Painting, Tiling, Electrical' },
+                { title: 'Construct commercial office space', budget: '₹1.2Cr', location: 'Bangalore', posted: '1 week ago', type: 'Commercial', skills: 'Structural, HVAC, Glasswork' },
+                 { title: 'Luxury Villa Interior Work', budget: '₹35L', location: 'Pune', posted: '10 days ago', type: 'Interiors', skills: 'Woodwork, False Ceiling, Lighting' },
+            ],
+            notifications: [
+                { id: 1, type: 'bid', text: 'Prestige Constructions placed a bid on your project.', time: '2h ago' },
+                { id: 2, type: 'milestone', text: 'Milestone "Foundation" has been approved.', time: '1d ago' },
+                { id: 3, type: 'message', text: 'New message from Sobha Developers.', time: '3d ago' }
+            ],
+            activeProjects: {
+                customer: { name: "Alex's Modern Villa", progress: 45, nextMilestone: "Roofing", budgetSpent: 1125000, totalBudget: 2500000 },
+                contractor: [
+                    { name: "Alex's Modern Villa", progress: 45, status: 'On Track', client: 'Alex Chen' },
+                    { name: "Sharma's Duplex", progress: 80, status: 'On Track', client: 'R. Sharma' },
+                    { name: "Commercial Block C", progress: 20, status: 'Delayed', client: 'InfraCorp' },
+                ]
+            },
+            workers: [
+                { id: 1, name: 'Rajesh Kumar', role: 'Mason', status: 'Assigned' },
+                { id: 2, name: 'Suresh Singh', role: 'Plumber', status: 'Available' },
+                { id: 3, name: 'Amit Patel', role: 'Electrician', status: 'Assigned' },
+            ],
+            projectGallery: [
+                'https://placehold.co/600x400/1f2937/fef08a?text=Foundation',
+                'https://placehold.co/600x400/1f2937/fef08a?text=Pillars',
+                'https://placehold.co/600x400/1f2937/fef08a?text=Brickwork',
+                'https://placehold.co/600x400/1f2937/fef08a?text=Site+View'
+            ]
+        };
+        
+        // Market Rates for Budget Calculator (per sq. ft. in INR)
+        const marketRates = {
+            bangalore: { basic: 1500, mid: 1800, premium: 2200 },
+            mumbai: { basic: 1800, mid: 2200, premium: 2700 },
+            delhi: { basic: 1600, mid: 2000, premium: 2500 },
+            foreign_multiplier: 1.4 // Foreign materials cost 40% more on average
+        };
+
+        // ===================================================================
+        // PAGE CONTENT TEMPLATES
+        // ===================================================================
+        const pageTemplates = {
+            // Customer Pages
+            'customer-dashboard': `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-card p-6 rounded-xl fade-in">
+                            <h3 class="font-bold text-xl mb-4">Active Project: <span class="neon-yellow-text">${mockData.activeProjects.customer.name}</span></h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1"><span class="text-sm font-medium text-gray-300">Overall Progress</span><span class="text-sm font-bold text-yellow-300">${mockData.activeProjects.customer.progress}%</span></div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2.5"><div class="bg-yellow-400 h-2.5 rounded-full" style="width: ${mockData.activeProjects.customer.progress}%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-1"><span class="text-sm font-medium text-gray-300">Budget Spent</span><span class="text-sm font-bold text-gray-300">₹${mockData.activeProjects.customer.budgetSpent.toLocaleString('en-IN')} / ₹${mockData.activeProjects.customer.totalBudget.toLocaleString('en-IN')}</span></div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2.5"><div class="bg-yellow-400 h-2.5 rounded-full" style="width: ${(mockData.activeProjects.customer.budgetSpent / mockData.activeProjects.customer.totalBudget * 100).toFixed(2)}%"></div></div>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex flex-wrap gap-4">
+                                <button onclick="navigateTo('track-project')" class="px-4 py-2 bg-yellow-400/20 text-yellow-300 font-semibold rounded-lg text-sm hover:bg-yellow-400/30">Track Full Progress</button>
+                                <button class="px-4 py-2 bg-white/10 text-white font-semibold rounded-lg text-sm hover:bg-white/20">Message Contractor</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div onclick="navigateTo('ai-designer')" class="glass-card p-6 rounded-xl cursor-pointer text-center fade-in" style="animation-delay: 0.1s;"><h3 class="text-3xl mb-2">✨</h3><p class="font-semibold">AI Designer & Budget</p></div>
+                            <div onclick="navigateTo('hire-builders')" class="glass-card p-6 rounded-xl cursor-pointer text-center fade-in" style="animation-delay: 0.2s;"><h3 class="text-3xl mb-2">👷</h3><p class="font-semibold">Hire Builders</p></div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="glass-card p-6 rounded-xl fade-in" style="animation-delay: 0.3s;">
+                            <h3 class="font-bold text-xl mb-4">Notifications</h3>
+                            <div class="space-y-4">${mockData.notifications.map(n => `<div class="flex items-start gap-3"><div class="mt-1 w-2 h-2 rounded-full ${n.type === 'bid' ? 'bg-blue-400' : n.type === 'milestone' ? 'bg-green-400' : 'bg-yellow-400'} flex-shrink-0"></div><div><p class="text-sm text-gray-200">${n.text}</p><p class="text-xs text-gray-500">${n.time}</p></div></div>`).join('')}</div>
+                        </div>
+                         <div class="glass-card p-6 rounded-xl fade-in" style="animation-delay: 0.4s;">
+                            <h3 class="font-bold text-xl mb-4">Quick Links</h3>
+                             <div class="space-y-2">
+                                <button onclick="navigateTo('marketplace')" class="w-full text-left p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800">🛒 Marketplace</button>
+                                <button onclick="navigateTo('budget-prediction')" class="w-full text-left p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800">📈 AI Budget Predictor</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`,
+            'ai-designer': `
+                <div class="grid lg:grid-cols-5 gap-6">
+                    <div class="lg:col-span-3">
+                         <div class="glass-card p-8 rounded-xl">
+                            <h2 class="text-2xl font-bold mb-4">AI Design Studio</h2>
+                            <p class="text-gray-400 mb-6">Enter your requirements to get an AI-generated design concept and budget.</p>
+                            <div class="grid md:grid-cols-2 gap-4" id="budget-calculator-form">
+                                <div><label class="text-sm">City</label><select id="calc-city" class="w-full p-3 mt-1 rounded-lg input-field"><option value="bangalore" selected>Bangalore</option><option value="mumbai">Mumbai</option><option value="delhi">Delhi</option></select></div>
+                                <div><label class="text-sm">Plot Area (sq. ft.)</label><input type="number" id="calc-area" class="w-full p-3 mt-1 rounded-lg input-field" value="1200"></div>
+                                <div><label class="text-sm">Finish Quality</label><select id="calc-quality" class="w-full p-3 mt-1 rounded-lg input-field"><option value="basic">Basic</option><option value="mid" selected>Mid-Range</option><option value="premium">Premium</option></select></div>
+                                <div><label class="text-sm">Materials</label><select id="calc-materials" class="w-full p-3 mt-1 rounded-lg input-field"><option value="indian" selected>Indian Brands</option><option value="foreign">Foreign Brands</option></select></div>
+                            </div>
+                            <button id="generate-design-btn" onclick="generateAIDesign()" class="w-full mt-6 py-2 btn-primary text-gray-900 font-bold rounded-lg text-sm">Generate AI Design & Budget</button>
+                         </div>
+                    </div>
+                    <div id="ai-design-output" class="lg:col-span-2 space-y-6 hidden">
+                        <div class="glass-card p-6 rounded-xl">
+                             <h3 class="text-xl font-bold mb-4">AI Design Report</h3>
+                             <p id="ai-design-status" class="text-xs text-green-400 text-center mb-4 h-4"></p>
+                             <img id="ai-floor-plan" src="https://placehold.co/400x300/1f2937/fef08a?text=Floor+Plan" class="rounded-lg w-full aspect-video object-cover mb-4">
+                             <div id="ai-design-details" class="w-full text-sm space-y-2 text-gray-300"></div>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl">
+                            <h3 class="font-semibold mb-2">Estimated Budget</h3>
+                            <p id="estimated-cost" class="text-3xl font-bold neon-yellow-text">₹0</p>
+                            <div id="cost-breakdown" class="mt-4 hidden space-y-2 text-sm"></div>
+                        </div>
+                    </div>
+                </div>`,
+            'marketplace': `
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Materials Marketplace</h2>
+                    <div class="flex border border-gray-600 rounded-lg p-1">
+                         <button id="indian-brands-tab" onclick="switchMarketplaceTab('indian')" class="px-4 py-1 rounded-md text-sm font-semibold transition bg-yellow-400 text-gray-900">Indian Brands</button>
+                         <button id="foreign-brands-tab" onclick="switchMarketplaceTab('foreign')" class="px-4 py-1 rounded-md text-sm font-semibold transition text-gray-300">Foreign Brands</button>
+                    </div>
+                </div>
+                <div id="marketplace-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>`,
+            'hire-builders': `
+                 <div class="glass-card p-8 rounded-xl mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Post a Project</h2>
+                    <p class="text-gray-400 mb-6">Describe your project to start receiving bids from top contractors.</p>
+                    <form class="grid md:grid-cols-3 gap-4">
+                        <input type="text" class="p-3 rounded-lg input-field" placeholder="Project Title, e.g., Build 2BHK House">
+                        <input type="text" class="p-3 rounded-lg input-field" placeholder="Location, e.g., Bangalore">
+                        <input type="text" class="p-3 rounded-lg input-field" placeholder="Budget, e.g., ₹25L">
+                        <button type="button" class="md:col-span-3 w-full py-3 btn-primary text-gray-900 font-bold rounded-lg mt-2">Post Project & Get Bids</button>
+                    </form>
+                </div>
+                 <h2 class="text-2xl font-bold mb-4">Find & Hire Builders</h2>
+                 <div class="flex items-center gap-2 mb-4 pb-4 border-b border-gray-800">
+                    <span class="text-sm text-gray-400">Filter by Specialization:</span>
+                    <button onclick="filterContractors('All', this)" class="filter-btn active px-3 py-1 bg-yellow-400/20 text-yellow-300 text-xs font-semibold rounded-md">All</button>
+                    <button onclick="filterContractors('Residential', this)" class="filter-btn px-3 py-1 bg-white/10 text-white text-xs font-semibold rounded-md">Residential</button>
+                    <button onclick="filterContractors('Luxury Villas', this)" class="filter-btn px-3 py-1 bg-white/10 text-white text-xs font-semibold rounded-md">Luxury</button>
+                    <button onclick="filterContractors('Budget Homes', this)" class="filter-btn px-3 py-1 bg-white/10 text-white text-xs font-semibold rounded-md">Budget</button>
+                </div>
+                 <div id="contractors-list" class="space-y-4">
+                    <!-- Contractors will be rendered here -->
+                 </div>`,
+            'track-project': `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-card p-6 rounded-xl">
+                            <h2 class="text-2xl font-bold mb-6">Project Progress: Alex's Modern Villa</h2>
+                            <div class="flex justify-between items-center mb-2"><span class="font-semibold">Overall Progress</span><span class="font-bold neon-yellow-text">45%</span></div>
+                            <div class="w-full bg-gray-700 rounded-full h-4"><div class="bg-yellow-400 h-4 rounded-full" style="width: 45%"></div></div>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl">
+                             <h3 class="text-xl font-bold mb-4">Progress Gallery</h3>
+                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                ${mockData.projectGallery.map(img => `<img src="${img}" class="rounded-lg aspect-video object-cover cursor-pointer hover:scale-105 transition-transform">`).join('')}
+                             </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-4">Recent Updates</h3>
+                            <div class="space-y-4 text-sm border-l-2 border-yellow-400/50 pl-4">
+                                <p><strong class="block text-gray-300">Sep 20, 2025:</strong> Brickwork for the first floor has been completed by the masonry team.</p>
+                                <p><strong class="block text-gray-300">Sep 15, 2025:</strong> First-floor slab concrete poured and is now curing.</p>
+                                <p><strong class="block text-gray-300">Sep 1, 2025:</strong> All pillars for the ground floor are complete. Ready for slab work.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="glass-card p-6 rounded-xl">
+                             <h3 class="text-xl font-bold mb-4">Project Timeline</h3>
+                             <div class="space-y-4">
+                                <div class="flex gap-3"><div class="w-6 h-6 rounded-full bg-green-500/50 flex items-center justify-center text-sm flex-shrink-0">✅</div><div><p>Foundation</p><p class="text-xs text-gray-400">Completed</p></div></div>
+                                <div class="flex gap-3"><div class="w-6 h-6 rounded-full bg-yellow-500/50 flex items-center justify-center text-sm flex-shrink-0">⏳</div><div><p>Structure & Slabs</p><p class="text-xs text-gray-400">In Progress</p></div></div>
+                                <div class="flex gap-3"><div class="w-6 h-6 rounded-full bg-gray-500/50 flex items-center justify-center text-sm flex-shrink-0">⚪</div><div><p>Roofing</p><p class="text-xs text-gray-400">Upcoming</p></div></div>
+                                <div class="flex gap-3"><div class="w-6 h-6 rounded-full bg-gray-500/50 flex items-center justify-center text-sm flex-shrink-0">⚪</div><div><p>Plumbing & Electrical</p><p class="text-xs text-gray-400">Upcoming</p></div></div>
+                                <div class="flex gap-3"><div class="w-6 h-6 rounded-full bg-gray-500/50 flex items-center justify-center text-sm flex-shrink-0">⚪</div><div><p>Finishing</p><p class="text-xs text-gray-400">Upcoming</p></div></div>
+                             </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl">
+                             <h3 class="text-xl font-bold mb-4">Project Documents</h3>
+                             <div class="space-y-2 text-sm">
+                                <a href="#" class="flex items-center gap-2 p-2 bg-gray-800/50 rounded-lg hover:bg-gray-800">📄 Blueprint.pdf</a>
+                                <a href="#" class="flex items-center gap-2 p-2 bg-gray-800/50 rounded-lg hover:bg-gray-800">📄 Contract.pdf</a>
+                             </div>
+                        </div>
+                    </div>
+                </div>`,
+            'billing': `
+                <h2 class="text-2xl font-bold mb-6">Billing & Payments</h2>
+                <div class="glass-card p-8 rounded-xl">
+                    <h3 class="font-bold text-lg mb-4">Transaction History</h3>
+                    <table class="w-full text-left">
+                        <thead><tr class="border-b border-gray-700 text-sm text-gray-400"><th class="py-2">Date</th><th class="py-2">Description</th><th class="py-2 text-right">Amount</th><th class="py-2 text-center">Status</th></tr></thead>
+                        <tbody>
+                             <tr class="border-b border-gray-800"><td class="py-3">15 Aug 2025</td><td class="py-3">Milestone 1: Foundation</td><td class="py-3 text-right">₹5,00,000</td><td class="py-3 text-center"><span class="px-2 py-0.5 text-xs rounded-full bg-green-500/20 text-green-300">Paid</span></td></tr>
+                            <tr class="border-b border-gray-800"><td class="py-3">10 Aug 2025</td><td class="py-3">Material Purchase: Cement</td><td class="py-3 text-right">₹50,000</td><td class="py-3 text-center"><span class="px-2 py-0.5 text-xs rounded-full bg-green-500/20 text-green-300">Paid</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>`,
+            'budget-prediction': `<div class="glass-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-4">AI Budget Prediction Tool</h2>
+                    <p class="text-gray-400 mb-6">Estimate what a contractor's quote might look like, including overheads.</p>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4" id="prediction-calculator-form">
+                        <div><label class="text-sm">City</label><select id="predict-city" class="w-full p-3 mt-1 rounded-lg input-field"><option value="bangalore" selected>Bangalore</option><option value="mumbai">Mumbai</option><option value="delhi">Delhi</option></select></div>
+                        <div><label class="text-sm">Area (sq. ft.)</label><input type="number" id="predict-area" class="w-full p-3 mt-1 rounded-lg input-field" value="1200"></div>
+                        <div><label class="text-sm">Quality</label><select id="predict-quality" class="w-full p-3 mt-1 rounded-lg input-field"><option value="basic">Basic</option><option value="mid" selected>Mid-Range</option><option value="premium">Premium</option></select></div>
+                        <div><label class="text-sm">Contingency (%)</label><input type="number" id="predict-contingency" class="w-full p-3 mt-1 rounded-lg input-field" value="15" title="This represents contractor profit, overhead, and a buffer for unexpected costs."></div>
+                    </div>
+                    <div class="mt-8 bg-gray-800/50 p-6 rounded-lg">
+                        <h3 class="font-semibold mb-2">Predicted Project Cost</h3>
+                        <p id="final-prediction" class="text-4xl font-bold neon-yellow-text">₹0</p>
+                        <div id="prediction-breakdown" class="mt-4 hidden space-y-2 text-sm"></div>
+                    </div>
+                </div>`,
+            'my-profile': `
+                 <h2 class="text-2xl font-bold mb-6">My Profile</h2>
+                 <div class="glass-card p-8 rounded-xl">
+                    <form class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <div><label class="block text-sm">Full Name</label><input type="text" class="w-full p-3 mt-1 rounded-lg input-field" value="Alex Chen"></div>
+                           <div><label class="block text-sm">Email</label><input type="email" class="w-full p-3 mt-1 rounded-lg input-field" value="alex.chen@email.com" disabled></div>
+                        </div>
+                         <div id="profile-contractor-fields" class="space-y-4"></div>
+                        <div><label class="block text-sm">Current Password</label><input type="password" class="w-full p-3 mt-1 rounded-lg input-field"></div>
+                        <div><label class="block text-sm">New Password</label><input type="password" class="w-full p-3 mt-1 rounded-lg input-field"></div>
+                        <div class="pt-4"><button type="button" class="px-6 py-2 btn-primary text-gray-900 font-bold rounded-lg">Save Changes</button></div>
+                    </form>
+                 </div>`,
+            // Contractor Pages
+            'contractor-dashboard': `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-card p-6 rounded-xl fade-in">
+                            <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-xl">Ongoing Projects</h3><button onclick="navigateTo('view-projects')" class="px-4 py-2 bg-yellow-400/20 text-yellow-300 font-semibold rounded-lg text-sm hover:bg-yellow-400/30">Find New Projects</button></div>
+                            <div class="space-y-4">${mockData.activeProjects.contractor.map(p => `<div class="p-4 bg-gray-800/50 rounded-lg flex items-center justify-between gap-4"><div><p class="font-semibold">${p.name}</p><p class="text-xs text-gray-400">Client: ${p.client}</p></div><div class="text-right"><p class="font-bold text-lg">${p.progress}%</p><span class="text-xs px-2 py-0.5 rounded-full ${p.status === 'On Track' ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}">${p.status}</span></div></div>`).join('')}</div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div onclick="navigateTo('manage-workers')" class="glass-card p-6 rounded-xl cursor-pointer text-center fade-in" style="animation-delay: 0.1s;"><h3 class="text-3xl mb-2">💼</h3><p class="font-semibold">Manage Workers</p></div>
+                            <div onclick="navigateTo('ai-quotation-tool')" class="glass-card p-6 rounded-xl cursor-pointer text-center fade-in" style="animation-delay: 0.2s;"><h3 class="text-3xl mb-2">📊</h3><p class="font-semibold">AI Quotation Tool</p></div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="glass-card p-6 rounded-xl fade-in" style="animation-delay: 0.3s;"><h3 class="font-bold text-xl mb-4">Earnings this Month</h3><p class="text-3xl font-bold neon-yellow-text">₹4,50,000</p><p class="text-sm text-green-400">+15% from last month</p></div>
+                        <div class="glass-card p-6 rounded-xl fade-in" style="animation-delay: 0.4s;"><h3 class="font-bold text-xl mb-4">Quick Links</h3><div class="space-y-2"><button onclick="navigateTo('portfolio')" class="w-full text-left p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800">📑 My Portfolio</button><button onclick="navigateTo('billing')" class="w-full text-left p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800">💳 Payouts & Billing</button></div></div>
+                    </div>
+                </div>`,
+            'portfolio': `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-card p-6 rounded-xl"><h3 class="font-bold text-xl mb-4">Showcase Projects</h3><div class="grid grid-cols-2 gap-4">${mockData.projectGallery.map(img => `<img src="${img}" class="rounded-lg aspect-video object-cover">`).join('')}</div><button class="mt-4 w-full py-2 bg-yellow-400/20 text-yellow-300 font-semibold rounded-lg text-sm hover:bg-yellow-400/30">Upload New Project</button></div>
+                    </div>
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="glass-card p-6 rounded-xl"><h3 class="font-bold text-xl mb-4">Key Stats</h3><div class="space-y-2"><div class="flex justify-between"><span>Rating:</span><span class="font-bold text-yellow-300">⭐ 4.8 / 5.0</span></div><div class="flex justify-between"><span>Projects Completed:</span><span class="font-bold">50+</span></div><div class="flex justify-between"><span>Years in Business:</span><span class="font-bold">15</span></div></div></div>
+                        <div class="glass-card p-6 rounded-xl"><h3 class="font-bold text-xl mb-4">Client Reviews</h3><div class="text-sm"><blockquote>"Prestige Homes did an amazing job..."</blockquote><p class="text-xs text-gray-400 text-right mt-1">- R. Sharma</p></div></div>
+                    </div>
+                </div>`,
+            'view-projects': `
+                <h2 class="text-2xl font-bold mb-6">Open Customer Projects</h2><div class="space-y-4">${mockData.customerProjects.map(proj => `<div class="glass-card p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4"><div><h3 class="font-bold text-lg">${proj.title} <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-medium ml-2">${proj.type}</span></h3><p class="text-sm text-gray-400 mt-1">${proj.location} - <span class="text-gray-300">Posted ${proj.posted}</span></p><div class="mt-2 flex flex-wrap gap-2">${proj.skills.split(', ').map(s => `<span class="text-xs px-2 py-0.5 rounded bg-gray-700">${s}</span>`).join('')}</div></div><div class="flex items-center gap-4 w-full sm:w-auto"><div class="text-center"><p class="text-sm text-gray-400">Budget</p><p class="font-semibold text-lg text-yellow-400">${proj.budget}</p></div><button class="px-6 py-2 btn-primary text-gray-900 font-semibold rounded-lg w-full sm:w-auto">Submit Bid</button></div></div>`).join('')}</div>`,
+            'manage-workers': `
+                 <h2 class="text-2xl font-bold mb-6">Manage Workers</h2><div class="glass-card p-8 rounded-xl"><table class="w-full text-left"><thead><tr class="border-b border-gray-700 text-sm text-gray-400"><th class="py-2">Name</th><th class="py-2">Role</th><th class="py-2 text-center">Status</th><th class="py-2 text-right">Action</th></tr></thead><tbody>${mockData.workers.map(w => `<tr class="border-b border-gray-800"><td class="py-3">${w.name}</td><td class="py-3">${w.role}</td><td class="py-3 text-center"><span class="px-2 py-0.5 text-xs rounded-full ${w.status === 'Assigned' ? 'bg-blue-500/20 text-blue-300' : 'bg-green-500/20 text-green-300'}">${w.status}</span></td><td class="py-3 text-right"><button class="text-sm text-yellow-400 hover:underline">Assign</button></td></tr>`).join('')}</tbody></table></div>`,
+            'ai-quotation-tool': `<div class="glass-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-4">AI Quotation Tool</h2>
+                    <p class="text-gray-400 mb-6">Generate a detailed quote for a new project.</p>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4" id="quote-calculator-form">
+                        <div><label class="text-sm">City</label><select id="quote-city" class="w-full p-3 mt-1 rounded-lg input-field"><option value="bangalore" selected>Bangalore</option><option value="mumbai">Mumbai</option><option value="delhi">Delhi</option></select></div>
+                        <div><label class="text-sm">Area (sq. ft.)</label><input type="number" id="quote-area" class="w-full p-3 mt-1 rounded-lg input-field" value="1200"></div>
+                        <div><label class="text-sm">Quality</label><select id="quote-quality" class="w-full p-3 mt-1 rounded-lg input-field"><option value="basic">Basic</option><option value="mid" selected>Mid-Range</option><option value="premium">Premium</option></select></div>
+                        <div><label class="text-sm">Profit Margin (%)</label><input type="number" id="quote-margin" class="w-full p-3 mt-1 rounded-lg input-field" value="15"></div>
+                    </div>
+                    <div class="mt-8 bg-gray-800/50 p-6 rounded-lg">
+                        <h3 class="font-semibold mb-2">Generated Quotation</h3>
+                        <p id="final-quote" class="text-4xl font-bold neon-yellow-text">₹0</p>
+                        <div id="quote-breakdown" class="mt-4 hidden space-y-2 text-sm"></div>
+                    </div>
+                </div>`,
+        };
+
+        // ===================================================================
+        // UI & NAVIGATION LOGIC
+        // ===================================================================
+        const pageContent = document.getElementById('page-content');
+        const pageTitle = document.getElementById('page-title');
+        const cartCountEl = document.getElementById('cart-count');
+        
+        // Navigation items
+        const customerNavItems = [
+            { id: 'customer-dashboard', name: 'Dashboard', icon: '🏠' },
+            { id: 'ai-designer', name: 'AI Designer', icon: '✨' },
+            { id: 'marketplace', name: 'Marketplace', icon: '🛒' },
+            { id: 'hire-builders', name: 'Hire Builders', icon: '👷' },
+            { id: 'track-project', name: 'Track Project', icon: '📊' },
+            { id: 'billing', name: 'Billing', icon: '💳' },
+            { id: 'budget-prediction', name: 'AI Budget Predictor', icon: '📈'},
+            { id: 'my-profile', name: 'My Profile', icon: '👤' },
+        ];
+
+        const contractorNavItems = [
+            { id: 'contractor-dashboard', name: 'Dashboard', icon: '🏠' },
+            { id: 'portfolio', name: 'My Portfolio', icon: '📑' },
+            { id: 'view-projects', name: 'View Projects', icon: '📝' },
+            { id: 'manage-workers', name: 'Manage Workers', icon: '💼' },
+            { id: 'ai-quotation-tool', name: 'AI Quotation Tool', icon: '📊' },
+            { id: 'billing', name: 'Payouts', icon: '💳' },
+            { id: 'my-profile', name: 'My Profile', icon: '👤' },
+        ];
+        
+        function createNavLinks(items, container) {
+            container.innerHTML = items.map(item => `<button id="nav-${item.id}" onclick="navigateTo('${item.id}')" class="w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-gray-300 hover:bg-yellow-400/10 hover:text-yellow-300 rounded-md transition"><span class="text-lg">${item.icon}</span> ${item.name}</button>`).join('');
+        }
+        
+        function showAuthModal(form = 'login', accType = null) {
+            const authModal = document.getElementById('auth-modal');
+            authModal.classList.remove('hidden');
+            setTimeout(() => {
+                authModal.querySelector('.glass-card').classList.remove('scale-95');
+                authModal.classList.remove('opacity-0');
+            }, 10);
+            showAuthForm(form);
+            if(accType) switchAccountType(accType);
+            else switchAccountType('customer');
+        }
+
+        function hideAuthModal() {
+            const authModal = document.getElementById('auth-modal');
+            authModal.querySelector('.glass-card').classList.add('scale-95');
+            authModal.classList.add('opacity-0');
+            setTimeout(() => authModal.classList.add('hidden'), 300);
+        }
+
+        function showAuthForm(form) {
+            document.getElementById('login-form').classList.toggle('hidden', form !== 'login');
+            document.getElementById('signup-form').classList.toggle('hidden', form !== 'signup');
+        }
+        
+        function switchAccountType(type) {
+            document.getElementById('account-type').value = type;
+            const modalContent = document.getElementById('auth-modal-content');
+            const isCustomer = type === 'customer';
+
+            document.getElementById('customer-tab').classList.toggle('bg-yellow-400', isCustomer);
+            document.getElementById('customer-tab').classList.toggle('text-gray-900', isCustomer);
+            document.getElementById('contractor-tab').classList.toggle('bg-yellow-400', !isCustomer);
+            document.getElementById('contractor-tab').classList.toggle('text-gray-900', !isCustomer);
+            document.getElementById('customer-fields').classList.toggle('hidden', !isCustomer);
+            document.getElementById('contractor-fields').classList.toggle('hidden', isCustomer);
+
+            if (type === 'contractor') {
+                modalContent.classList.add('max-w-xl');
+                modalContent.classList.remove('max-w-md');
+            } else {
+                modalContent.classList.add('max-w-md');
+                modalContent.classList.remove('max-w-xl');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            currentUserType = Math.random() > 0.5 ? 'customer' : 'contractor';
+            document.getElementById('user-name-display').textContent = currentUserType === 'customer' ? 'Alex Chen' : 'Prestige Homes';
+            launchApp();
+        }
+        
+        function handleSignup(event) {
+            event.preventDefault();
+            currentUserType = document.getElementById('account-type').value;
+            document.getElementById('user-name-display').textContent = document.getElementById('signup-name').value || 'User';
+            launchApp();
+        }
+        
+        function launchApp() {
+            hideAuthModal();
+            document.getElementById('landing-page').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            const navItems = currentUserType === 'customer' ? customerNavItems : contractorNavItems;
+            const navContainer = currentUserType === 'customer' ? document.getElementById('customer-nav') : document.getElementById('contractor-nav');
+            document.getElementById('customer-nav').innerHTML = '';
+            document.getElementById('contractor-nav').innerHTML = '';
+            createNavLinks(navItems, navContainer);
+            navigateTo(navItems[0].id);
+        }
+        
+        function runPageScripts(pageId) {
+             if (pageId === 'ai-designer') {
+                document.getElementById('budget-calculator-form').addEventListener('input', calculateBudget);
+            } else if (pageId === 'marketplace') {
+                renderMarketplace('indian');
+            } else if (pageId === 'hire-builders') {
+                renderContractors('All');
+            } else if (pageId === 'ai-quotation-tool') {
+                document.getElementById('quote-calculator-form').addEventListener('input', calculateQuote);
+                calculateQuote();
+            } else if(pageId === 'budget-prediction') {
+                document.getElementById('prediction-calculator-form').addEventListener('input', calculatePrediction);
+                calculatePrediction();
+            } else if (pageId === 'my-profile' && currentUserType === 'contractor') {
+                document.getElementById('profile-contractor-fields').innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-sm">Company Name</label><input type="text" class="w-full p-3 mt-1 rounded-lg input-field" value="Prestige Homes Inc."></div>
+                        <div><label class="block text-sm">Company Website</label><input type="url" class="w-full p-3 mt-1 rounded-lg input-field" value="https://prestigehomes.com"></div>
+                    </div>`;
+            }
+        }
+
+        function navigateTo(pageId) {
+            pageContent.innerHTML = pageTemplates[pageId] || `<p>Page not found.</p>`;
+            const navItems = currentUserType === 'customer' ? customerNavItems : contractorNavItems;
+            const currentPage = navItems.find(item => item.id === pageId);
+            pageTitle.innerText = currentPage ? currentPage.name : 'Page';
+            document.querySelectorAll('#sidebar nav button').forEach(btn => btn.classList.remove('bg-yellow-400/20', 'text-yellow-300', 'font-semibold'));
+            const activeNavButton = document.getElementById(`nav-${pageId}`);
+            if (activeNavButton) activeNavButton.classList.add('bg-yellow-400/20', 'text-yellow-300', 'font-semibold');
+            runPageScripts(pageId);
+        }
+        
+        function logout() {
+            document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('landing-page').classList.remove('hidden');
+            currentUserType = null;
+            cart = [];
+            updateCartCount();
+        }
+        
+        function getAITip(city, quality, materials) {
+            if (quality === 'premium' && materials === 'indian') {
+                return "AI Tip: For a premium finish, consider pairing high-quality Indian structural materials with select items from our Foreign Brands section, like designer tiles or fittings.";
+            }
+            if (city === 'mumbai' && quality !== 'basic') {
+                return "AI Tip: Construction costs in Mumbai are higher. Ensure your foundation planning is robust to handle local soil conditions, which can impact long-term budget.";
+            }
+            if (materials === 'foreign') {
+                return "AI Tip: Using foreign brands increases quality but also import duties and shipping times. Plan your procurement schedule at least 45 days in advance.";
+            }
+            return "AI Tip: A mid-range finish offers the best balance of quality and cost-effectiveness for most residential projects in this area.";
+        }
+        
+        function calculateBudget() {
+            const city = document.getElementById('calc-city').value, area = parseFloat(document.getElementById('calc-area').value) || 0, quality = document.getElementById('calc-quality').value, materials = document.getElementById('calc-materials').value;
+            if (!city || !area) return;
+            let baseRate = marketRates[city][quality] * (materials === 'foreign' ? marketRates.foreign_multiplier : 1);
+            const totalCost = area * baseRate;
+            
+            const costEl = document.getElementById('estimated-cost');
+            const breakdownEl = document.getElementById('cost-breakdown');
+            if(costEl) costEl.textContent = '₹' + totalCost.toLocaleString('en-IN');
+            if(breakdownEl) {
+                breakdownEl.classList.remove('hidden');
+                const tip = getAITip(city, quality, materials);
+                breakdownEl.innerHTML = `<div class="flex justify-between"><span class="text-gray-400">Foundation & Structure (30%):</span> <span>₹${(totalCost * 0.3).toLocaleString('en-IN')}</span></div><div class="flex justify-between"><span class="text-gray-400">Finishing & Interiors (45%):</span> <span>₹${(totalCost * 0.45).toLocaleString('en-IN')}</span></div><div class="flex justify-between"><span class="text-gray-400">Plumbing & Electrical (25%):</span> <span>₹${(totalCost * 0.25).toLocaleString('en-IN')}</span></div><div class="flex items-start gap-2 mt-4 pt-4 border-t border-gray-700"><span class="text-yellow-400">💡</span><p class="text-xs text-gray-400">${tip}</p></div>`;
+            }
+            return totalCost;
+        }
+        
+        function calculateQuote() {
+            const city = document.getElementById('quote-city').value, area = parseFloat(document.getElementById('quote-area').value) || 0, quality = document.getElementById('quote-quality').value, margin = parseFloat(document.getElementById('quote-margin').value) || 0;
+            if (!city || !area) return;
+            const baseCost = area * marketRates[city][quality];
+            const profit = baseCost * (margin / 100);
+            const totalQuote = baseCost + profit;
+            document.getElementById('final-quote').textContent = '₹' + totalQuote.toLocaleString('en-IN');
+            const breakdownEl = document.getElementById('quote-breakdown');
+            breakdownEl.classList.remove('hidden');
+            breakdownEl.innerHTML = `<div class="flex justify-between"><span class="text-gray-400">Material & Labor Cost:</span> <span>₹${baseCost.toLocaleString('en-IN')}</span></div><div class="flex justify-between"><span class="text-gray-400">Profit Margin (${margin}%):</span> <span>₹${profit.toLocaleString('en-IN')}</span></div><div class="flex justify-between border-t border-gray-700 mt-2 pt-2"><span class="font-semibold">Total Quote:</span> <span class="font-semibold">₹${totalQuote.toLocaleString('en-IN')}</span></div>`;
+        }
+
+        function calculatePrediction() {
+            const city = document.getElementById('predict-city').value, area = parseFloat(document.getElementById('predict-area').value) || 0, quality = document.getElementById('predict-quality').value, contingency = parseFloat(document.getElementById('predict-contingency').value) || 0;
+            if (!city || !area) return;
+            const baseCost = area * marketRates[city][quality];
+            const contingencyAmount = baseCost * (contingency / 100);
+            const totalPrediction = baseCost + contingencyAmount;
+            document.getElementById('final-prediction').textContent = '₹' + totalPrediction.toLocaleString('en-IN');
+            const breakdownEl = document.getElementById('prediction-breakdown');
+            breakdownEl.classList.remove('hidden');
+            breakdownEl.innerHTML = `<div class="flex justify-between"><span class="text-gray-400">Base Construction Cost:</span> <span>₹${baseCost.toLocaleString('en-IN')}</span></div><div class="flex justify-between"><span class="text-gray-400">Contingency & Overhead (${contingency}%):</span> <span>₹${contingencyAmount.toLocaleString('en-IN')}</span></div><div class="flex justify-between border-t border-gray-700 mt-2 pt-2"><span class="font-semibold">Predicted Total:</span> <span class="font-semibold">₹${totalPrediction.toLocaleString('en-IN')}</span></div>`;
+        }
+
+        function renderMarketplace(type) {
+            const grid = document.getElementById('marketplace-grid');
+            if(!grid) return;
+            grid.innerHTML = mockData.marketplaceItems[type].map(item => `<div class="glass-card rounded-xl overflow-hidden"><img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover"><div class="p-4"><h3 class="font-bold">${item.name}</h3><p class="text-sm text-gray-400">${item.category}</p><div class="flex justify-between items-center mt-4"><span class="text-lg font-semibold neon-yellow-text">₹${item.price.toLocaleString('en-IN')}/${item.unit}</span><button onclick="addToCart(${item.id}, '${type}')" class="px-4 py-1 bg-yellow-400/20 text-yellow-300 text-sm font-semibold rounded-md hover:bg-yellow-400/30">Add</button></div></div></div>`).join('');
+        }
+        
+        function switchMarketplaceTab(type) {
+            renderMarketplace(type);
+            document.getElementById('indian-brands-tab').classList.toggle('bg-yellow-400', type === 'indian');
+            document.getElementById('indian-brands-tab').classList.toggle('text-gray-900', type === 'indian');
+            document.getElementById('foreign-brands-tab').classList.toggle('bg-yellow-400', type === 'foreign');
+            document.getElementById('foreign-brands-tab').classList.toggle('text-gray-900', type === 'foreign');
+        }
+
+        function addToCart(itemId, type) {
+            const item = mockData.marketplaceItems[type].find(i => i.id === itemId);
+            if (!item) return;
+            const existingItem = cart.find(i => i.id === itemId);
+            if (existingItem) existingItem.quantity++; else cart.push({ ...item, quantity: 1 });
+            updateCartCount();
+        }
+        
+        function updateCartCount() {
+            cartCountEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        function generateAIDesign() {
+            const btn = document.getElementById('generate-design-btn');
+            const status = document.getElementById('ai-design-status');
+            const detailsContainer = document.getElementById('ai-design-details');
+            const outputContainer = document.getElementById('ai-design-output');
+
+            if(!btn || !status || !detailsContainer || !outputContainer) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+            outputContainer.classList.add('hidden');
+
+            setTimeout(() => {
+                // First, calculate budget
+                calculateBudget();
+
+                const styles = ['Minimalist', 'Contemporary', 'Bohemian'];
+                const floors = ['G+2', 'Simplex', 'Duplex'];
+                const configs = ['4BHK', '5BHK', '3BHK + Office'];
+
+                detailsContainer.innerHTML = `
+                    <div class="flex justify-between"><span>Style:</span><span class="font-semibold">${styles[Math.floor(Math.random() * styles.length)]}</span></div>
+                    <div class="flex justify-between"><span>Floors:</span><span class="font-semibold">${floors[Math.floor(Math.random() * floors.length)]}</span></div>
+                    <div class="flex justify-between"><span>Configuration:</span><span class="font-semibold">${configs[Math.floor(Math.random() * configs.length)]}</span></div>
+                `;
+
+                outputContainer.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Regenerate AI Design & Budget';
+                status.textContent = '✨ New design generated!';
+                setTimeout(() => status.textContent = '', 3000);
+            }, 2000);
+        }
+
+        function renderContractors(filter = 'All') {
+            const list = document.getElementById('contractors-list');
+            if (!list) return;
+            const filtered = filter === 'All' ? mockData.contractors : mockData.contractors.filter(c => c.specialization === filter);
+            list.innerHTML = filtered.map(c => `<div class="glass-card p-4 rounded-xl flex flex-wrap items-center justify-between gap-4"><div><h3 class="font-bold text-lg">${c.name}</h3><p class="text-sm text-yellow-400">⭐ ${c.rating} / 5.0 (${c.projects}+ Projects)</p></div><div class="text-center"><p class="text-sm text-gray-400">Specialization</p><p class="font-semibold text-lg">${c.specialization}</p></div><div class="text-center"><p class="text-sm text-gray-400">Indicative Bid</p><p class="font-semibold text-lg">${c.bid}</p></div><div class="flex gap-2"><button class="px-4 py-2 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20">View Profile</button><button class="px-4 py-2 btn-primary text-gray-900 font-semibold rounded-lg">Request Quote</button></div></div>`).join('') || `<p class="text-center text-gray-400">No contractors found for this filter.</p>`;
+        }
+
+        function filterContractors(filter, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-yellow-400/20', 'text-yellow-300');
+                btn.classList.add('bg-white/10', 'text-white');
+            });
+            btnElement.classList.add('bg-yellow-400/20', 'text-yellow-300');
+            btnElement.classList.remove('bg-white/10', 'text-white');
+            renderContractors(filter);
+        }
+
+    </script>
+
+</body>
+</html>
+
