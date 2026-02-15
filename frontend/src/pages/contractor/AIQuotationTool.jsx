@@ -28,7 +28,7 @@ export default function AIQuotationTool() {
 
   return (
     <div className="space-y-6">
-      <GlassCard className="p-8 fade-in">
+      <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
         <h2 className="text-2xl font-bold mb-2">AI Quotation Generator</h2>
         <p className="text-gray-400 mb-6">Generate a detailed, ML-powered project quotation including labour, supervision, permits, and phased timeline.</p>
 
@@ -89,7 +89,7 @@ export default function AIQuotationTool() {
       {result && (
         <>
           {/* Total Quote */}
-          <GlassCard className="p-8 fade-in">
+          <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
             <h3 className="text-xl font-bold mb-2">Generated Quotation</h3>
             <p className="text-4xl font-bold neon-yellow-text mb-4">₹{result.totalQuote?.toLocaleString('en-IN')}</p>
             <div className="space-y-2 text-sm">
@@ -104,7 +104,7 @@ export default function AIQuotationTool() {
 
           {/* Construction Phases */}
           {result.phases?.length > 0 && (
-            <GlassCard className="p-8 fade-in">
+            <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
               <h3 className="text-xl font-bold mb-4">Construction Phases & Timeline</h3>
               <div className="space-y-4">
                 {result.phases.map((phase, i) => (

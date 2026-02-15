@@ -23,15 +23,30 @@ const contractorNavItems = [
   { path: '/contractor/profile', name: 'My Profile', icon: '👤' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ open, onClose }) {
   const { user, logout } = useAuth();
   const navItems = user?.role === 'customer' ? customerNavItems : contractorNavItems;
 
   return (
-    <aside className="w-64 bg-gray-900/50 border-r border-white/10 flex flex-col no-scrollbar overflow-y-auto flex-shrink-0">
-      <div className="p-4 flex items-center space-x-2 border-b border-white/10 flex-shrink-0">
-        <Logo />
-        <span className="text-xl font-bold text-white">Buildease</span>
+    <aside
+      className={`
+        fixed inset-y-0 left-0 z-40 w-64 bg-gray-900/95 border-r border-white/10 flex flex-col no-scrollbar overflow-y-auto flex-shrink-0
+        transform transition-transform duration-300 ease-in-out
+        ${open ? 'translate-x-0' : '-translate-x-full'}
+        md:static md:translate-x-0
+      `}
+    >
+      <div className="p-4 flex items-center justify-between border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center space-x-2">
+          <Logo />
+          <span className="text-xl font-bold text-white">Buildease</span>
+        </div>
+        {/* Close button — visible on mobile only */}
+        <button onClick={onClose} className="md:hidden text-gray-400 hover:text-white p-1" aria-label="Close menu">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       <div className="my-auto">
@@ -40,6 +55,7 @@ export default function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={onClose}
               className={({ isActive }) =>
                 `w-full flex items-center gap-3 px-4 py-2 text-left text-sm rounded-md transition ${
                   isActive

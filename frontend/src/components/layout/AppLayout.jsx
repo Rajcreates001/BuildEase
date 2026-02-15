@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -21,13 +22,18 @@ export default function AppLayout() {
   const location = useLocation();
   const lastSegment = location.pathname.split('/').pop();
   const title = pageTitles[lastSegment] || 'Dashboard';
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-900">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title={title} />
-        <div className="flex-1 p-6 overflow-y-auto no-scrollbar">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 bg-black/60 z-30 md:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <Header title={title} onMenuToggle={() => setSidebarOpen(true)} />
+        <div className="flex-1 p-3 sm:p-4 md:p-6 overflow-y-auto no-scrollbar">
           <Outlet />
         </div>
       </div>

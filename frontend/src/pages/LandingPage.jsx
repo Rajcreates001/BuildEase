@@ -12,19 +12,19 @@ export default function LandingPage() {
   return (
     <main className="relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-0 -left-1/4 w-96 h-96 bg-yellow-400/20 rounded-full filter blur-3xl opacity-30 animate-pulse" />
-      <div className="absolute bottom-0 -right-1/4 w-96 h-96 bg-amber-500/20 rounded-full filter blur-3xl opacity-30 animate-pulse" />
+      <div className="absolute top-0 -left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-yellow-400/20 rounded-full filter blur-3xl opacity-30 animate-pulse" />
+      <div className="absolute bottom-0 -right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-amber-500/20 rounded-full filter blur-3xl opacity-30 animate-pulse" />
 
       {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-10 p-4">
-        <nav className="container mx-auto flex justify-between items-center">
-          <a href="#" className="flex items-center space-x-2">
-            <Logo size={40} />
-            <span className="text-2xl font-bold text-white">Buildease</span>
+      <header className="absolute top-0 left-0 right-0 z-10 p-3 sm:p-4">
+        <nav className="container mx-auto flex justify-between items-center gap-2">
+          <a href="#" className="flex items-center space-x-2 flex-shrink-0">
+            <Logo size={32} />
+            <span className="text-lg sm:text-2xl font-bold text-white">Buildease</span>
           </a>
-          <div>
-            <button onClick={() => openAuth('login')} className="px-4 py-2 text-white rounded-md hover:bg-white/10 transition">Login</button>
-            <button onClick={() => openAuth('signup')} className="ml-2 px-6 py-2 btn-primary text-gray-900 font-semibold rounded-md shadow-lg shadow-yellow-500/20">Get Started</button>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button onClick={() => openAuth('login')} className="px-3 sm:px-4 py-2 text-sm sm:text-base text-white rounded-md hover:bg-white/10 transition">Login</button>
+            <button onClick={() => openAuth('signup')} className="px-4 sm:px-6 py-2 text-sm sm:text-base btn-primary text-gray-900 font-semibold rounded-md shadow-lg shadow-yellow-500/20">Get Started</button>
           </div>
         </nav>
       </header>
@@ -32,7 +32,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="h-screen flex items-center justify-center text-center">
         <div className="container mx-auto px-4 z-10">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-extrabold text-white leading-tight">
             Your Home, Your Way –
             <br />
             <span className="animated-gradient text-transparent bg-clip-text">Powered by AI.</span>

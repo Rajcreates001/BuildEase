@@ -90,14 +90,15 @@ export default function ManageWorkers() {
         </GlassCard>
       )}
 
-      <GlassCard className="p-8">
-        <table className="w-full text-left">
+      <GlassCard className="p-4 sm:p-6 md:p-8">
+        <div className="overflow-x-auto -mx-2">
+        <table className="w-full text-left text-sm sm:text-base min-w-[420px]">
           <thead>
             <tr className="border-b border-gray-700 text-sm text-gray-400">
-              <th className="py-2">Name</th>
-              <th className="py-2">Role</th>
-              <th className="py-2 text-center">Status</th>
-              <th className="py-2 text-right">Actions</th>
+              <th className="py-2 px-2">Name</th>
+              <th className="py-2 px-2">Role</th>
+              <th className="py-2 px-2 text-center">Status</th>
+              <th className="py-2 px-2 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -123,6 +124,7 @@ export default function ManageWorkers() {
             )}
           </tbody>
         </table>
+        </div>
       </GlassCard>
     </div>
   );

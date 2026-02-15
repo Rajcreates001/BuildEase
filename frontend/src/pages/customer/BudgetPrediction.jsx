@@ -28,7 +28,7 @@ export default function BudgetPrediction() {
 
   return (
     <div className="space-y-6">
-      <GlassCard className="p-8 fade-in">
+      <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
         <h2 className="text-2xl font-bold mb-2">AI Budget Prediction Tool</h2>
         <p className="text-gray-400 mb-6">ML-powered estimation of what a contractor's full project cost might look like, including labour, permits, and overheads.</p>
 
@@ -89,7 +89,7 @@ export default function BudgetPrediction() {
       {result && (
         <>
           {/* Total Cost */}
-          <GlassCard className="p-8 fade-in">
+          <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
             <h3 className="text-xl font-bold mb-2">Predicted Total Project Cost</h3>
             <p className="text-4xl font-bold neon-yellow-text mb-4">₹{result.totalPrediction?.toLocaleString('en-IN')}</p>
             <div className="space-y-2 text-sm">
@@ -101,7 +101,7 @@ export default function BudgetPrediction() {
 
           {/* Cost Categories */}
           {result.categories && (
-            <GlassCard className="p-8 fade-in">
+            <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
               <h3 className="text-xl font-bold mb-4">Category-wise Breakdown</h3>
               <div className="space-y-3">
                 {Object.entries(result.categories).map(([key, val]) => {

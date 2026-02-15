@@ -36,7 +36,7 @@ export default function AIDesigner() {
 
   return (
     <div className="space-y-6">
-      <GlassCard className="p-8 fade-in">
+      <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
         <h2 className="text-2xl font-bold mb-2">AI House Designer & Budget Estimator</h2>
         <p className="text-gray-400 mb-6">Enter your requirements and our ML model will generate a floor plan blueprint with accurate cost estimation.</p>
 
@@ -142,7 +142,7 @@ export default function AIDesigner() {
 
           {/* Per-floor cards */}
           {blueprint.floors?.map((floor, fi) => (
-            <GlassCard key={fi} className="p-8 fade-in">
+            <GlassCard key={fi} className="p-4 sm:p-6 md:p-8 fade-in">
               <h3 className="text-lg font-bold mb-1">{floor.label}</h3>
               <p className="text-xs text-gray-500 mb-4">Floor Area: {floor.area} sq.ft</p>
 
@@ -175,7 +175,7 @@ export default function AIDesigner() {
 
       {/* Cost Estimation */}
       {estimate && (
-        <GlassCard className="p-8 fade-in">
+        <GlassCard className="p-4 sm:p-6 md:p-8 fade-in">
           <h3 className="text-xl font-bold mb-2">ML Cost Estimation</h3>
           <p className="text-sm text-gray-400 mb-4">Confidence: <span className="text-green-400 font-semibold">{(estimate.confidence * 100).toFixed(0)}%</span></p>
           <p className="text-4xl font-bold neon-yellow-text mb-4">₹{estimate.estimatedCost?.toLocaleString('en-IN')}</p>

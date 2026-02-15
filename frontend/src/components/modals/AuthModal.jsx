@@ -83,7 +83,7 @@ export default function AuthModal({ isOpen, onClose, initialForm = 'login', init
         className={`glass-card rounded-2xl w-full relative max-h-[90vh] flex flex-col ${accountType === 'contractor' && form === 'signup' ? 'max-w-xl' : 'max-w-md'}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-8 overflow-y-auto no-scrollbar">
+        <div className="p-4 sm:p-6 md:p-8 overflow-y-auto no-scrollbar">
           <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white transition z-10">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>

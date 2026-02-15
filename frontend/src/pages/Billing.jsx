@@ -23,18 +23,19 @@ export default function Billing() {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Billing & Payments</h2>
-      <GlassCard className="p-8">
+      <GlassCard className="p-4 sm:p-6 md:p-8">
         <h3 className="font-bold text-lg mb-4">Transaction History</h3>
         {loading ? (
           <p className="text-gray-400 text-center py-6">Loading transactions...</p>
         ) : transactions.length > 0 ? (
-          <table className="w-full text-left">
+          <div className="overflow-x-auto -mx-2">
+          <table className="w-full text-left text-sm sm:text-base min-w-[480px]">
             <thead>
               <tr className="border-b border-gray-700 text-sm text-gray-400">
-                <th className="py-2">Date</th>
-                <th className="py-2">Description</th>
-                <th className="py-2 text-right">Amount</th>
-                <th className="py-2 text-center">Status</th>
+                <th className="py-2 px-2">Date</th>
+                <th className="py-2 px-2">Description</th>
+                <th className="py-2 px-2 text-right">Amount</th>
+                <th className="py-2 px-2 text-center">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -52,6 +53,7 @@ export default function Billing() {
               ))}
             </tbody>
           </table>
+          </div>
         ) : (
           <p className="text-gray-400 text-center py-6">No transactions yet. Orders placed in the Marketplace will appear here.</p>
         )}

@@ -36,7 +36,7 @@ export default function Profile() {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">My Profile</h2>
-      <GlassCard className="p-8">
+      <GlassCard className="p-4 sm:p-6 md:p-8">
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
