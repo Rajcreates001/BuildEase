@@ -797,6 +797,6 @@ def market_rates_endpoint():
 
 # ═══════════════════════════════════════════════════════════════════════════════
 if __name__ == '__main__':
-    port = int(os.environ.get('AIML_PORT', 5001))
+    port = int(os.environ.get('PORT', os.environ.get('AIML_PORT', 5001)))
     print(f"Buildease AI/ML Service starting on port {port}")
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)

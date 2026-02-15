@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const http = require('http');
+const https = require('https');
 
 const AIML_URL = process.env.AIML_URL || 'http://localhost:5001';
+const httpModule = AIML_URL.startsWith('https') ? https : http;
 
 // Helper to proxy requests to the Python AI service
 function proxyToAI(aiPath, req, res) {
@@ -20,7 +22,7 @@ function proxyToAI(aiPath, req, res) {
     },
   };
 
-  const proxyReq = http.request(options, (proxyRes) => {
+  const proxyReq = httpModule.request(options, (proxyRes) => {
     let data = '';
     proxyRes.on('data', (chunk) => { data += chunk; });
     proxyRes.on('end', () => {
@@ -55,7 +57,7 @@ router.post('/prediction', (req, res) => proxyToAI('/api/ai/prediction', req, re
 // AI Market Rates
 router.get('/market-rates', (req, res) => {
   const url = new URL('/api/ai/market-rates', AIML_URL);
-  http.get(url.href, (proxyRes) => {
+  httpModule.get(url.href, (proxyRes) => {
     let data = '';
     proxyRes.on('data', (chunk) => { data += chunk; });
     proxyRes.on('end', () => {
